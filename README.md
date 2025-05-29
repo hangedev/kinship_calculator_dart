@@ -1,6 +1,8 @@
 # KinshipCalculator
 
 [![pub package](https://img.shields.io/pub/v/kinship_calculator.svg)](https://pub.dev/packages/kinship_calculator)
+[![GitHub license](https://img.shields.io/github/license/yeliulee/kinship_calculator_dart)](https://github.com/yeliulee/kinship_calculator_dart/blob/main/LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/yeliulee/kinship_calculator_dart?logo=github&style=flat)](https://github.com/yeliulee/kinship_calculator_dart/stargazers)
 
 Chinese kinship/relationship calculator.
 
@@ -16,14 +18,15 @@ Chinese kinship/relationship calculator.
 
 ## Getting started
 
-add `percent_indicator` to your pubspec.yaml
+add `kinship_calculator` to your pubspec.yaml
 
 将依赖添加到项目的 pubspec.yaml
 
 ```yaml
 dependencies:
-  percent_indicator: ^1.0.0
+  kinship_calculator: ^3.0.0
 ```
+
 then run `pub get` or `flutter pub get` for flutter project
 
 然后运行 `pub get`, flutter 项目运行 `flutter pub get`
@@ -35,7 +38,7 @@ import 'package:kinship_calculator/kinship_calculator.dart';
 
 void main() {
   final demo = KinshipCalculator.calculate(KinshipOption(
-    text: '爸爸的妈妈的哥哥',
+    text: '爸爸的弟弟',
   ));
 
   print('$demo');
@@ -48,8 +51,7 @@ For more example codes, please go to the `example` folder
 
 ## Thanks
 
-数据来源于 [mumuy/relationship][js_repo]
-
+Ported from [mumuy/relationship][js_repo] with some modifications.
 
 ## Features and bugs
 

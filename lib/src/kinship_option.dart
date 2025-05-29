@@ -17,8 +17,6 @@ class KinshipOption {
     this.sex = -1,
     this.type = 'default',
     this.reverse = false,
-  })  : assert(text != null),
-        assert(sex == -1 || sex == 0 || sex == 1),
-        assert(type == 'default' || type == 'chain'),
-        assert(reverse != null);
+  })  : assert(sex == -1 || sex == 0 || sex == 1),
+        assert(type == 'default' || type == 'chain');
 }

@@ -3,62 +3,49 @@ import 'package:test/test.dart';
 
 void main() {
   group('KinshipCalculator calculation test', () {
-    List<String> demo1;
-    List<String> demo2;
-    List<String> demo3;
-    List<String> demo4;
-    List<String> demo5;
-    List<String> demo6;
-
-    setUp(() {
-      demo1 = KinshipCalculator.calculate(KinshipOption(
+    test('Default calculation test', () {
+      final result = KinshipCalculator.calculate(KinshipOption(
         text: '爸爸的妈妈的哥哥',
       ));
+      expect(result, equals(['舅公']));
+    });
 
-      demo2 = KinshipCalculator.calculate(KinshipOption(
+    test('Gender specification tests', () {
+      final maleResult = KinshipCalculator.calculate(KinshipOption(
         text: '爸爸的妈妈的哥哥',
         reverse: true,
         sex: 1,
       ));
+      expect(maleResult, equals(['外甥孙']));
 
-      demo3 = KinshipCalculator.calculate(KinshipOption(
+      final femaleResult = KinshipCalculator.calculate(KinshipOption(
         text: '爸爸的妈妈的哥哥',
         reverse: true,
         sex: 0,
       ));
+      expect(femaleResult, equals(['外甥孙女']));
+    });
 
-      demo4 = KinshipCalculator.calculate(KinshipOption(
+    test('Chain type calculation test', () {
+      final result = KinshipCalculator.calculate(KinshipOption(
         text: '曾祖母',
         type: 'chain',
       ));
+      expect(result, equals(['爸爸的爸爸的妈妈']));
+    });
 
-      demo5 = KinshipCalculator.calculate(KinshipOption(
+    test('Reverse calculation tests', () {
+      final normalResult = KinshipCalculator.calculate(KinshipOption(
         text: '爸爸的爸爸',
         reverse: false,
       ));
+      expect(normalResult, equals(['爷爷']));
 
-      demo6 = KinshipCalculator.calculate(KinshipOption(
+      final reverseResult = KinshipCalculator.calculate(KinshipOption(
         text: '爸爸的爸爸',
         reverse: true,
       ));
-    });
-
-    test('Default test', () {
-      expect(demo1.toString(), '[舅公]');
-    });
-
-    test('Gender test', () {
-      expect(demo2.toString(), '[外甥孙]');
-      expect(demo3.toString(), '[外甥孙女]');
-    });
-
-    test('Chain test', () {
-      expect(demo4.toString(), '[爸爸的爸爸的妈妈]');
-    });
-
-    test('Reverse test', () {
-      expect(demo5.toString(), '[爷爷]');
-      expect(demo6.toString(), '[孙子]');
+      expect(reverseResult, equals(['孙子']));
     });
   });
 }
