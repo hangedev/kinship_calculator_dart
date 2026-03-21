@@ -128,7 +128,7 @@ List<String> getSelectors(String str) {
       // 词义扩展
       for (final item in replaceRules) {
         for (final word in item.arr) {
-          final name1 = name.replaceFirst(item.exp, word);
+          final name1 = regReplaceFirst(name, item.exp, word);
           if (name1 != name) {
             keywords.add(name1);
             getList(name1);
