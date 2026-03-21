@@ -341,7 +341,10 @@ List<String> selector2id(String selector, [int sex = -1]) {
     return [];
   }
   final result = expandSelector(selector)
-      .map((s) => s.replaceFirst(RegExp(r',[01]'), '').substring(1))
+      .map((s) {
+        final stripped = s.replaceFirst(RegExp(r',[01]'), '');
+        return stripped.length > 1 ? stripped.substring(1) : '';
+      })
       .toList();
   return filterId(result);
 }

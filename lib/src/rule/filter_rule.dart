@@ -6,19 +6,20 @@
 class FilterRule {
   final RegExp exp;
   final String str;
-  const FilterRule(this.exp, this.str);
+  final bool global;
+  const FilterRule(this.exp, this.str, {this.global = false});
 }
 
 final List<FilterRule> filterRules = [
   /* 年龄 */
   // 有大有小，增加不确定性
-  FilterRule(RegExp(r'^(.+)&o([^#]+)&l'), r'$1$2'),
+  FilterRule(RegExp(r'^(.+)&o([^#]+)&l'), r'$1$2', global: true),
   // 有大有小，增加不确定性
-  FilterRule(RegExp(r'^(.+)&l([^#]+)&o'), r'$1$2'),
+  FilterRule(RegExp(r'^(.+)&l([^#]+)&o'), r'$1$2', global: true),
   // 有大有小，增加不确定性
-  FilterRule(RegExp(r'^(.+)?,o([sb](&\d+)?)([^#]+)&l'), r'$1,x$2$4'),
+  FilterRule(RegExp(r'^(.+)?,o([sb](&\d+)?)([^#]+)&l'), r'$1,x$2$4', global: true),
   // 有大有小，增加不确定性
-  FilterRule(RegExp(r'^(.+)?,l([sb](&\d+)?)([^#]+)&o'), r'$1,x$2$4'),
+  FilterRule(RegExp(r'^(.+)?,l([sb](&\d+)?)([^#]+)&o'), r'$1,x$2$4', global: true),
 
   /* 兄弟姐妹 */
   // 哥哥姐姐的哥哥姐姐还是自己的哥哥姐姐(年龄判断)
@@ -39,11 +40,13 @@ final List<FilterRule> filterRules = [
   FilterRule(
     RegExp(r'(,[fh1])(,[olx][sb](&\d+)?)+,[olx]s'),
     r'$1,xs',
+    global: true,
   ),
   // 如果自己是女性,兄弟姐妹的兄弟就是自己的兄弟
   FilterRule(
     RegExp(r'(,[mw0])(,[olx][sb](&\d+)?)+,[olx]b'),
     r'$1,xb',
+    global: true,
   ),
   // 不知道性别，兄弟姐妹的兄弟是兄弟或自己
   FilterRule(
@@ -60,11 +63,11 @@ final List<FilterRule> filterRules = [
 
   /* 父母 */
   // 母亲的丈夫是自己的父亲
-  FilterRule(RegExp(r'm,h'), r'f'),
+  FilterRule(RegExp(r'm,h'), r'f', global: true),
   // 父亲的妻子是自己的母亲
-  FilterRule(RegExp(r'f,w'), r'm'),
+  FilterRule(RegExp(r'f,w'), r'm', global: true),
   // 兄弟的父母就是自己的父母
-  FilterRule(RegExp(r',[xol][sb](&\d+)?(,[mf])'), r'$2'),
+  FilterRule(RegExp(r',[xol][sb](&\d+)?(,[mf])'), r'$2', global: true),
 
   /* 父母的子女 */
   // 父母的女儿排序判断姐妹的排序
@@ -102,59 +105,65 @@ final List<FilterRule> filterRules = [
 
   /* 孩子 */
   // 孩子的兄弟是自己的儿子(排序判断)
-  FilterRule(RegExp(r',[ds](&[ol\d]+)?,[olx]b(&\d+)'), r',s$2'),
+  FilterRule(RegExp(r',[ds](&[ol\d]+)?,[olx]b(&\d+)'), r',s$2', global: true),
   // 孩子的姐妹是自己的女儿(排序判断)
-  FilterRule(RegExp(r',[ds](&[ol\d]+)?,[olx]s(&\d+)'), r',d$2'),
+  FilterRule(RegExp(r',[ds](&[ol\d]+)?,[olx]s(&\d+)'), r',d$2', global: true),
   // 孩子的兄弟是自己的儿子(年龄判断)
-  FilterRule(RegExp(r',[ds]&o,ob'), r',s&o'),
+  FilterRule(RegExp(r',[ds]&o,ob'), r',s&o', global: true),
   // 孩子的姐妹是自己的女儿(年龄判断)
-  FilterRule(RegExp(r',[ds]&o,os'), r',d&o'),
+  FilterRule(RegExp(r',[ds]&o,os'), r',d&o', global: true),
   // 孩子的兄弟是自己的儿子(年龄判断)
-  FilterRule(RegExp(r',[ds]&l,lb'), r',s&l'),
+  FilterRule(RegExp(r',[ds]&l,lb'), r',s&l', global: true),
   // 孩子的姐妹是自己的女儿(年龄判断)
-  FilterRule(RegExp(r',[ds]&l,ls'), r',d&l'),
+  FilterRule(RegExp(r',[ds]&l,ls'), r',d&l', global: true),
   // 孩子的姐妹是自己的女儿
-  FilterRule(RegExp(r',[ds](&[ol\d]+)?,[olx]s(&\d+)?'), r',d$2'),
+  FilterRule(RegExp(r',[ds](&[ol\d]+)?,[olx]s(&\d+)?'), r',d$2', global: true),
   // 孩子的兄弟是自己的儿子
-  FilterRule(RegExp(r',[ds](&[ol\d]+)?,[olx]b(&\d+)?'), r',s$2'),
+  FilterRule(RegExp(r',[ds](&[ol\d]+)?,[olx]b(&\d+)?'), r',s$2', global: true),
 
   /* 夫妻 */
   // 自己是女性，女儿或儿子的妈妈是自己
   FilterRule(
     RegExp(r'(,[mwd0]|,[olx]s)(&[ol\d]+)?,[ds](&[ol\d]+)?,m'),
     r'$1',
+    global: true,
   ),
   // 自己是女性，女儿或儿子的爸爸是自己的丈夫
   FilterRule(
     RegExp(r'(,[mwd0]|,[olx]s)(&[ol\d]+)?,[ds](&[ol\d]+)?,f'),
     r'$1,h',
+    global: true,
   ),
   // 自己是男性，女儿或儿子的爸爸是自己
   FilterRule(
     RegExp(r'(,[fhs1]|,[olx]b)(&[ol\d]+)?,[ds](&[ol\d]+)?,f'),
     r'$1',
+    global: true,
   ),
   // 自己是男性，女儿或儿子的妈妈是自己的妻子
   FilterRule(
     RegExp(r'(,[fhs1]|,[olx]b)(&[ol\d]+)?,[ds](&[ol\d]+)?,m'),
     r'$1,w',
+    global: true,
   ),
   // 不知道性别，子女的妈妈是妻子或自己
   FilterRule(RegExp(r'^,[ds],m(.+)?$'), r',w$1#$1'),
   // 不知道性别，子女的爸爸是丈夫或自己
   FilterRule(RegExp(r'^,[ds],f(.+)?$'), r',h$1#$1'),
   // 夫妻的孩子就是自己的孩子
-  FilterRule(RegExp(r',[wh](,[ds])'), r'$1'),
+  FilterRule(RegExp(r',[wh](,[ds])'), r'$1', global: true),
   // 夫妻的对方是自己
-  FilterRule(RegExp(r',w,h|,h,w'), ''),
+  FilterRule(RegExp(r',w,h|,h,w'), '', global: true),
   // 并列关系处理1 X[A|B|C]Y = XAY#X[B|C]Y
   FilterRule(
     RegExp(r'(.+)?\[([^\|]+?)\|([^\[\]]*\|[^\[\]]*)\](.+)?'),
     r'$1$2$4#$1[$3]$4',
+    global: true,
   ),
   // 并列关系处理2 X[A|B]Y = XAY#XBY
   FilterRule(
     RegExp(r'(.+)?\[([^\[\]\|]+?)\|([^\[\]\|]+?)?\](.+)?'),
     r'$1$2$4#$1$3$4',
+    global: true,
   ),
 ];
