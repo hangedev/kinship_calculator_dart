@@ -2,7 +2,7 @@ name: kinship_calculator
 description: A library for calculating Chinese relationships, ported from relationship.js
 homepage: https://github.com/yeliulee/kinship_calculator_dart
 repository: https://github.com/yeliulee/kinship_calculator_dart.git
-version: 3.0.0
+version: 4.0.0
 topics:
   - chinese
   - kinship
